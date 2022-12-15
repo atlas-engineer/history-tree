@@ -27,7 +27,7 @@
 (deftype function-symbol ()
   `(and symbol (satisfies fboundp)))
 
-(define-class entry ()
+(defclass* entry ()
   ((history nil
             :type (or null history-tree)
             :documentation "Required.
@@ -46,7 +46,7 @@ goes owner-less, we can still consult the last time it was accessed.")
    (nodes '()
           :type list
           :documentation "The list of nodes that access an entry."))
-  (:accessor-name-transformer (class*:make-name-transformer name))
+  (:accessor-name-transformer (make-name-transformer name))
   (:documentation "Wrapped data as stored in `history-tree''s `entries'.
 Each entry has a unique datum.  Each `node' points to one entry.  Multiple nodes
 may point to the same entry.  Entries may also be node-less; they are kept
@@ -71,7 +71,7 @@ time.  Node-less entries are available for manual deletion with
                         :history history
                         :last-access (or last-access (local-time:now))))
 
-(define-class node ()
+(defclass* node ()
   ((parent nil
            :type (or null node)
            :documentation "If nil, it means the node is a root node.
@@ -90,7 +90,7 @@ Arbitrary data (wrapped in an `entry' object) carried
 by the node.  `history-tree''s `entries' holds `entry'-`node' associations."))
   (:export-class-name-p t)
   (:export-accessor-names-p t)
-  (:accessor-name-transformer (class*:make-name-transformer name))
+  (:accessor-name-transformer (make-name-transformer name))
   (:documentation "Node structure of the history tree.
 Each node has one parent (unless it's a root node) and zero or multiple
 children.  Nodes may have zero or multiple owners."))
@@ -110,7 +110,7 @@ children.  Nodes may have zero or multiple owners."))
       (pushnew node (nodes entry)))
     node))
 
-(define-class binding ()
+(defclass* binding ()
   ((forward-child  nil
                   :type (or null node)
                   :documentation "Which of the `children' (in the bound `node')
@@ -120,7 +120,7 @@ is the child to go forward to for the bound owner.")
                 :writer t
                 :documentation "Timestamp of the last access to this node by the
 owner."))
-  (:accessor-name-transformer (class*:make-name-transformer name))
+  (:accessor-name-transformer (make-name-transformer name))
   (:documentation "The relationship between an owner and one of its nodes.
 In particular, it encodes the forward child and the date of last access to the
 node for a given owner."))
@@ -140,7 +140,7 @@ If the node has no owner, return Epoch."
                      (alex:hash-table-values (bindings node))))
       (local-time:unix-to-timestamp 0)))
 
-(define-class owner ()
+(defclass* owner ()
   ;; REVIEW: Add slot pointing to history an owner belongs to?  As long as the
   ;; owner has at least one node, the history can be accessed via the entry.
   ((origin nil
@@ -182,7 +182,7 @@ It's updated every time a node is visited.")
           :documentation "The list of all owned nodes."))
   (:export-class-name-p t)
   (:export-accessor-names-p t)
-  (:accessor-name-transformer (class*:make-name-transformer name))
+  (:accessor-name-transformer (make-name-transformer name))
   (:documentation "The high-level information about an owner.
 Each owner is identified by a unique identifier, which is arbitrary data (may
 even be NIL)."))
@@ -284,7 +284,7 @@ history data, e.g. a list of visited URLs that's not bound to any owner."
                     new-entry)
               new-entry))))))
 
-(define-class history-tree ()           ; TODO: Rename `history'?
+(defclass* history-tree ()           ; TODO: Rename `history'?
   ((owners (make-hash-table :test #'equalp)
            :type hash-table
            :documentation "The key is an owner identifier (an artitrary value),
@@ -319,7 +319,7 @@ It is a `function-symbol' so that the history can be more easily serialized than
 if if were a function."))
   (:export-class-name-p t)
   (:export-accessor-names-p t)
-  (:accessor-name-transformer (class*:make-name-transformer name))
+  (:accessor-name-transformer (make-name-transformer name))
   (:documentation "Starting point of the global history tree data structure."))
 
 (export 'make)

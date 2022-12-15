@@ -1,9 +1,6 @@
 ;;;; SPDX-FileCopyrightText: Atlas Engineer LLC
 ;;;; SPDX-License-Identifier: BSD-3-Clause
 
-(uiop:define-package :history-tree/tests
-  (:use :cl :lisp-unit2)
-  (:import-from :class-star #:define-class))
 (in-package :history-tree/tests)
 
 (defvar *owner* "test-owner")
@@ -142,10 +139,10 @@
     (assert-string= "http://example.root/A"
                     (htree:data (htree:owner-node history *owner*)))))
 
-(define-class web-page ()
+(defclass* web-page ()
   ((url "")
    (title ""))
-  (:accessor-name-transformer (class*:make-name-transformer name)))
+  (:accessor-name-transformer (make-name-transformer name)))
 
 (define-test compound-entry-uniqueness ()
   (let ((web-page1 (make-instance 'web-page :url "http://example.org"
@@ -485,6 +482,6 @@
         (htree:add-child url5 history owner2-spec)
         (htree:backward history owner2-spec)
         (let ((owner (htree:owner history *owner*)))
-          (assert-false (htree::find-owned-child url5 owner))
+          (assert-true (htree::find-owned-child url5 owner))
           (assert-true (htree::find-child url5 owner))
           (assert-true (htree::find-owned-child url5 (htree:owner history owner2-spec))))))))
