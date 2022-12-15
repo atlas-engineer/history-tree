@@ -482,6 +482,6 @@
         (htree:add-child url5 history owner2-spec)
         (htree:backward history owner2-spec)
         (let ((owner (htree:owner history *owner*)))
-          (assert-true (htree::find-owned-child url5 owner))
+          (assert-false (htree::find-owned-child url5 owner))
           (assert-true (htree::find-child url5 owner))
           (assert-true (htree::find-owned-child url5 (htree:owner history owner2-spec))))))))
