@@ -298,7 +298,7 @@
                (hash-table-count (htree:entries history)))
 
     (maphash (lambda (entry entry-accessors)
-               (assert-eq (if (str:contains? "example.root" (htree:data entry))
+               (assert-eq (if (search "example.root" (htree:data entry))
                               1
                               0)
                           (length (htree:nodes entry-accessors))))
