@@ -16,10 +16,14 @@
   :components ((:file "package")
                (:file "history-tree")))
 
+(defsystem "history-tree/submodules"
+  :defsystem-depends-on ("nasdf")
+  :class :nasdf-submodule-system)
+
 (defsystem "history-tree/tests"
-  :depends-on (history-tree lisp-unit2)
+  :defsystem-depends-on ("nasdf")
+  :class :nasdf-test-system
+  :depends-on (history-tree)
+  :targets (:package :history-tree/tests)
   :components ((:file "tests/package")
-               (:file "tests/tests"))
-  :perform (test-op (op c)
-                    (symbol-call :lisp-unit2 :run-tests :package :history-tree/tests
-                                 :run-contexts (find-symbol "WITH-SUMMARY-CONTEXT" :lisp-unit2))))
+               (:file "tests/tests")))
