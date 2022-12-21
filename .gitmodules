@@ -18,3 +18,7 @@
 	path = _build/trivial-package-local-nicknames
 	url = https://github.com/phoe/trivial-package-local-nicknames
 	shallow = true
+[submodule "_build/hu.dwim.asdf"]
+	path = _build/hu.dwim.asdf
+	url = https://github.com/hu-dwim/hu.dwim.asdf
+	shallow = true
