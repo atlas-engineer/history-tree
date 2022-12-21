@@ -1,0 +1,20 @@
+[submodule "_build/alexandria"]
+	path = _build/alexandria
+	url = https://gitlab.common-lisp.net/alexandria/alexandria.git
+	shallow = true
+[submodule "_build/cl-custom-hash-table"]
+	path = _build/cl-custom-hash-table
+	url = https://github.com/metawilm/cl-custom-hash-table
+	shallow = true
+[submodule "_build/local-time"]
+	path = _build/local-time
+	url = https://github.com/dlowe-net/local-time
+	shallow = true
+[submodule "_build/hu.dwim.defclass-star"]
+	path = _build/hu.dwim.defclass-star
+	url = https://github.com/hu-dwim/hu.dwim.defclass-star
+	shallow = true
+[submodule "_build/trivial-package-local-nicknames"]
+	path = _build/trivial-package-local-nicknames
+	url = https://github.com/phoe/trivial-package-local-nicknames
+	shallow = true
