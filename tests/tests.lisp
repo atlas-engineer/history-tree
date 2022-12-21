@@ -298,7 +298,7 @@
                (hash-table-count (htree:entries history)))
 
     (maphash (lambda (entry entry-accessors)
-               (assert-eq (if (str:contains? "example.root" (htree:data entry))
+               (assert-eq (if (search "example.root" (htree:data entry))
                               1
                               0)
                           (length (htree:nodes entry-accessors))))
@@ -482,6 +482,6 @@
         (htree:add-child url5 history owner2-spec)
         (htree:backward history owner2-spec)
         (let ((owner (htree:owner history *owner*)))
-          (assert-true (htree::find-owned-child url5 owner))
+          (assert-false (htree::find-owned-child url5 owner))
           (assert-true (htree::find-child url5 owner))
           (assert-true (htree::find-owned-child url5 (htree:owner history owner2-spec))))))))

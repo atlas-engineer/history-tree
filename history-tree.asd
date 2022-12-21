@@ -8,18 +8,31 @@
   :homepage "https://github.com/atlas-engineer/history-tree"
   :license "BSD 3-Clause"
   :in-order-to ((test-op (test-op "history-tree/tests")))
+  :around-compile "NASDF:FAIL-ON-WARNINGS"
   :depends-on (alexandria
                cl-custom-hash-table
                local-time
                hu.dwim.defclass-star
                trivial-package-local-nicknames)
   :components ((:file "package")
-               (:file "history-tree")))
+               (:file "history-tree"))
+  :in-order-to ((test-op (test-op "history-tree/tests")
+                         (test-op "history-tree/tests/compilation"))))
+
+(defsystem "history-tree/submodules"
+  :defsystem-depends-on ("nasdf")
+  :class :nasdf-submodule-system)
 
 (defsystem "history-tree/tests"
-  :depends-on (history-tree lisp-unit2)
+  :defsystem-depends-on ("nasdf")
+  :class :nasdf-test-system
+  :depends-on (history-tree)
+  :targets (:package :history-tree/tests)
   :components ((:file "tests/package")
-               (:file "tests/tests"))
-  :perform (test-op (op c)
-                    (symbol-call :lisp-unit2 :run-tests :package :history-tree/tests
-                                 :run-contexts (find-symbol "WITH-SUMMARY-CONTEXT" :lisp-unit2))))
+               (:file "tests/tests")))
+
+(defsystem "history-tree/tests/compilation"
+  :defsystem-depends-on ("nasdf")
+  :class :nasdf-compilation-test-system
+  :depends-on (history-tree)
+  :packages (:history-tree))
