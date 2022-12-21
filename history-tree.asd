@@ -8,6 +8,7 @@
   :homepage "https://github.com/atlas-engineer/history-tree"
   :license "BSD 3-Clause"
   :in-order-to ((test-op (test-op "history-tree/tests")))
+  :around-compile "NASDF:FAIL-ON-WARNINGS"
   :depends-on (alexandria
                cl-custom-hash-table
                local-time
