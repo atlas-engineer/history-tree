@@ -15,7 +15,9 @@
                hu.dwim.defclass-star
                trivial-package-local-nicknames)
   :components ((:file "package")
-               (:file "history-tree")))
+               (:file "history-tree"))
+  :in-order-to ((test-op (test-op "history-tree/tests")
+                         (test-op "history-tree/tests/compilation"))))
 
 (defsystem "history-tree/submodules"
   :defsystem-depends-on ("nasdf")
@@ -28,3 +30,9 @@
   :targets (:package :history-tree/tests)
   :components ((:file "tests/package")
                (:file "tests/tests")))
+
+(defsystem "history-tree/tests/compilation"
+  :defsystem-depends-on ("nasdf")
+  :class :nasdf-compilation-test-system
+  :depends-on (history-tree)
+  :packages (:history-tree))
