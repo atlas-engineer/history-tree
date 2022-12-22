@@ -804,12 +804,14 @@ As a second value, return the list of all NODE's children, including NODE."
     (garbage-collect (delete-duplicates (mapcar #'root nodes)))))
 
 (defun first-hash-table-key (hash-table)
-  (with-hash-table-iterator (next-entry hash-table)
-    (nth-value 1 (next-entry))))
+  (cl-custom-hash-table:with-custom-hash-table
+    (with-hash-table-iterator (next-entry hash-table)
+      (nth-value 1 (next-entry)))))
 
 (defun first-hash-table-value (hash-table) ; TODO: Unused
-  (with-hash-table-iterator (next-entry hash-table)
-    (nth-value 2 (next-entry))))
+  (cl-custom-hash-table:with-custom-hash-table
+    (with-hash-table-iterator (next-entry hash-table)
+      (nth-value 2 (next-entry)))))
 
 (defun disown-all (history owner)
   (when (owner-p owner)
