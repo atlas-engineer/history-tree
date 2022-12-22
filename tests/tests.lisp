@@ -144,6 +144,10 @@
    (title ""))
   (:accessor-name-transformer (make-name-transformer name)))
 
+(defun ht-count (hash-table)
+  (cl-custom-hash-table:with-custom-hash-table
+    (hash-table-count hash-table)))
+
 (define-test compound-entry-uniqueness ()
   (let ((web-page1 (make-instance 'web-page :url "http://example.org"
                                             :title "Example page"))
@@ -153,7 +157,7 @@
       (htree:add-child web-page1 history *owner*)
       (htree:add-child web-page2 history *owner*)
       (assert-eq 1
-                 (hash-table-count (htree:entries history)))
+                 (ht-count (htree:entries history)))
       (assert-string= "Example page"
                       (title (htree:data (htree::first-hash-table-key (htree:entries history))))))
     (let ((history (make :key 'url)))
@@ -161,14 +165,15 @@
       (htree:add-owner history "b")
       (htree:add-child web-page2 history "b")
       (assert-eq 1
-                 (hash-table-count (htree:entries history)))
+                 (ht-count (htree:entries history)))
       (assert-string= "Example page"
                       (title (htree:data (htree::first-hash-table-key (htree:entries history))))))
     (let ((history (make)))
       (htree:add-child web-page1 history *owner*)
       (htree:add-child web-page2 history *owner*)
       (assert-eq 2
-                 (hash-table-count (htree:entries history)))
+                 (ht-count (htree:entries history)))
+      #+custom-hash-table-native
       (assert-equal (sort (mapcar #'title (list web-page1 web-page2)) #'string<)
                     (sort (loop for key being the hash-keys in (htree:entries history)
                                 collect (title (htree:data key)))
@@ -193,7 +198,7 @@
     (htree:add-child url2 history "b")
     (htree:add-child url3 history "b")
     (assert-eq 3
-               (hash-table-count (htree:entries history)))
+               (ht-count (htree:entries history)))
     (assert-string= url3
                     (htree:data (htree:owner-node history "b")))
     (assert-string= url2
@@ -295,14 +300,15 @@
     (htree:delete-owner history "parent-owner")
     (assert-false (htree:owner history "parent-owner"))
     (assert-eq 9
-               (hash-table-count (htree:entries history)))
+               (ht-count (htree:entries history)))
 
-    (maphash (lambda (entry entry-accessors)
-               (assert-eq (if (search "example.root" (htree:data entry))
-                              1
-                              0)
-                          (length (htree:nodes entry-accessors))))
-             (htree:entries history))))
+    (cl-custom-hash-table:with-custom-hash-table
+      (maphash (lambda (entry entry-accessors)
+                 (assert-eq (if (search "example.root" (htree:data entry))
+                                1
+                                0)
+                            (length (htree:nodes entry-accessors))))
+               (htree:entries history)))))
 
 (define-test visit-all-nodes-until-distant-node ()
   (let* ((history (make-history1))
@@ -350,7 +356,11 @@
   (let ((history (make :owner "a"))
         (url1 "http://example.org"))
     (htree:add-child url1 history "a")
-    (sleep 0.1)
+    (sleep
+     ;; According to the `local-time' manual subsecond precision is only
+     ;; supported on the following implementations:
+     #+(or abcl allegro cmucl ccl sbcl lispworks) 0.1
+     #-(or abcl allegro cmucl ccl sbcl lispworks) 1.1)
     (htree:add-owner history "b")
     (htree::visit history "b" (first (htree:find-nodes history url1)))
 
@@ -377,13 +387,13 @@
     (htree:add-child url2 history "b")
     (htree:delete-owner history "a")
     (assert-eq 2
-               (hash-table-count (htree:entries history)))
+               (ht-count (htree:entries history)))
     (htree:delete-data history url1)
     (assert-eq 1
-               (hash-table-count (htree:entries history)))
+               (ht-count (htree:entries history)))
     (htree:delete-data history url2)
     (assert-eq 1
-               (hash-table-count (htree:entries history)))))
+               (ht-count (htree:entries history)))))
 
 (define-test reset-owner ()
   (let ((history (make :owner "a"))
