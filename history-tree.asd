@@ -2,7 +2,7 @@
 ;;;; SPDX-License-Identifier: BSD-3-Clause
 
 (defsystem "history-tree"
-  :version "0.0.0"
+  :version "0.1.0"
   :description "Store the history of a browser's visited paths."
   :author "Atlas Engineer LLC"
   :homepage "https://github.com/atlas-engineer/history-tree"
