@@ -549,11 +549,11 @@ Return (values OWNER (current OWNER))."
 (defmethod add-child (data (history history-tree) owner-spec)
   "Create or find a node holding DATA and set current node to it.
 Return the (possibly new) current node.
-Return NIL is OWNER-SPEC does not refer to an existing owner.
+Return NIL if OWNER-SPEC does not refer to an existing owner.
 
 If current node matches DATA (which may be non-identical since the
-`history-tree''s `key' and `test' functions may identify two non-identical datum
-as equal), do nothing.
+`history-tree''s `key' and `test' functions may identify two non-identical
+pieces of data as equal), do nothing.
 
 If DATA is found among the children, OWNER-SPEC current node `forward-child' is
 set to the matching child, the owner current node is set to this child.
