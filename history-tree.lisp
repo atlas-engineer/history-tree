@@ -46,6 +46,7 @@ goes owner-less, we can still consult the last time it was accessed.")
    (nodes '()
           :type list
           :documentation "The list of nodes that access an entry."))
+  (:predicate-name-transformer 'nclasses:always-dashed-predicate-name-transformer)
   (:documentation "Wrapped data as stored in `history-tree''s `entries'.
 Each entry has a unique datum.  Each `node' points to one entry.  Multiple nodes
 may point to the same entry.  Entries may also be node-less; they are kept
@@ -89,6 +90,7 @@ Arbitrary data (wrapped in an `entry' object) carried
 by the node.  `history-tree''s `entries' holds `entry'-`node' associations."))
   (:export-class-name-p t)
   (:export-accessor-names-p t)
+  (:predicate-name-transformer 'nclasses:always-dashed-predicate-name-transformer)
   (:documentation "Node structure of the history tree.
 Each node has one parent (unless it's a root node) and zero or multiple
 children.  Nodes may have zero or multiple owners."))
@@ -110,14 +112,15 @@ children.  Nodes may have zero or multiple owners."))
 
 (define-class binding ()
   ((forward-child  nil
-                  :type (or null node)
-                  :documentation "Which of the `children' (in the bound `node')
+                   :type (or null node)
+                   :documentation "Which of the `children' (in the bound `node')
 is the child to go forward to for the bound owner.")
    (last-access (local-time:now)
                 :type (or local-time:timestamp string) ; Support `string' for easier deserialization.
                 :writer t
                 :documentation "Timestamp of the last access to this node by the
 owner."))
+  (:predicate-name-transformer 'nclasses:always-dashed-predicate-name-transformer)
   (:documentation "The relationship between an owner and one of its nodes.
 In particular, it encodes the forward child and the date of last access to the
 node for a given owner."))
@@ -149,8 +152,8 @@ Not to be confused with the root, since the owner be go back to a parent of `ori
          :documentation "Arbitrary data.
 Use it to persist extra owner information to history.")
    (creator-id nil
-            :type t
-            :documentation "The owner-id in `origin's parent node that
+               :type t
+               :documentation "The owner-id in `origin's parent node that
 created this owner.  May be nil, in which case `origin' is a root node.
 
 Unless the parent was disowned by this `creator-id',
@@ -179,6 +182,7 @@ It's updated every time a node is visited.")
           :documentation "The list of all owned nodes."))
   (:export-class-name-p t)
   (:export-accessor-names-p t)
+  (:predicate-name-transformer 'nclasses:always-dashed-predicate-name-transformer)
   (:documentation "The high-level information about an owner.
 Each owner is identified by a unique identifier, which is arbitrary data (may
 even be NIL)."))
@@ -315,6 +319,7 @@ It is a `function-symbol' so that the history can be more easily serialized than
 if if were a function."))
   (:export-class-name-p t)
   (:export-accessor-names-p t)
+  (:predicate-name-transformer 'nclasses:always-dashed-predicate-name-transformer)
   (:documentation "Starting point of the global history tree data structure."))
 
 (export 'make)
