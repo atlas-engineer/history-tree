@@ -139,10 +139,9 @@
     (assert-string= "http://example.root/A"
                     (htree:data (htree:owner-node history *owner*)))))
 
-(defclass* web-page ()
+(define-class web-page ()
   ((url "")
-   (title ""))
-  (:accessor-name-transformer (make-name-transformer name)))
+   (title "")))
 
 (defun ht-count (hash-table)
   (cl-custom-hash-table:with-custom-hash-table

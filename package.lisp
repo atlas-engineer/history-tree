@@ -4,4 +4,4 @@
 (uiop:define-package :history-tree
   (:nicknames :htree)
   (:use :cl)
-  (:import-from :class* #:defclass* #:make-name-transformer))
+  (:import-from :nclasses #:define-class))
