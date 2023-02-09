@@ -163,6 +163,12 @@ When adding an entry with the same URL but with a different title, the existing
 entry's title is automatically updated to the new one, but the entry object
 stored in the tree remains the same.
 
+* Change log
+
+** 0.1.1
+
+- Switch from =hu.dwim.defclass-star= to =nclasses=.
+
 * Future work
 
 ** Hash tables vs. lists
