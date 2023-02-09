@@ -12,7 +12,7 @@
   :depends-on (alexandria
                cl-custom-hash-table
                local-time
-               hu.dwim.defclass-star
+               nclasses
                trivial-package-local-nicknames)
   :components ((:file "package")
                (:file "history-tree"))
