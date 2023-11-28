@@ -7,32 +7,24 @@
   :author "Atlas Engineer LLC"
   :homepage "https://github.com/atlas-engineer/history-tree"
   :license "BSD 3-Clause"
-  :in-order-to ((test-op (test-op "history-tree/tests")))
-  :around-compile "NASDF:FAIL-ON-WARNINGS"
   :depends-on (alexandria
                cl-custom-hash-table
                local-time
                nclasses
                trivial-package-local-nicknames)
+  :serial t
   :components ((:file "package")
                (:file "history-tree"))
-  :in-order-to ((test-op (test-op "history-tree/tests")
-                         (test-op "history-tree/tests/compilation"))))
-
-(defsystem "history-tree/submodules"
-  :defsystem-depends-on ("nasdf")
-  :class :nasdf-submodule-system)
+  :in-order-to ((test-op (test-op "history-tree/tests"))))
 
 (defsystem "history-tree/tests"
-  :defsystem-depends-on ("nasdf")
-  :class :nasdf-test-system
-  :depends-on (history-tree)
-  :targets (:package :history-tree/tests)
-  :components ((:file "tests/package")
-               (:file "tests/tests")))
-
-(defsystem "history-tree/tests/compilation"
-  :defsystem-depends-on ("nasdf")
-  :class :nasdf-compilation-test-system
-  :depends-on (history-tree)
-  :packages (:history-tree))
+  :depends-on ("history-tree" "lisp-unit2")
+  :serial t
+  :pathname "tests/"
+  :components ((:file "package")
+               (:file "tests"))
+  :perform (test-op (op c)
+                    (eval-input
+                     "(lisp-unit2:run-tests
+                       :package :history-tree/tests
+                       :run-contexts #'lisp-unit2:with-summary-context)")))
