@@ -165,6 +165,10 @@ stored in the tree remains the same.
 
 * Change log
 
+** 0.1.2
+
+- Remove =NASDF= as a dependency.
+
 ** 0.1.1
 
 - Switch from =hu.dwim.defclass-star= to =nclasses=.
